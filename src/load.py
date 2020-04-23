@@ -11,6 +11,7 @@ class Dataset:
     def __init__(self, data):
         self.data = data
         self.nlp = spacy.load("en_core_web_sm", disable=['tagger', 'parser', 'ner'])
+        self.titles = dict(((t, i) for i, t in self.data[TODO]))
         self.processed = None
 
     @classmethod
@@ -25,15 +26,13 @@ class Dataset:
     def load(cls):
         raise NotImplementedError()
 
-    def _preprocess(self, lemmatize=False, stopwords=False):
-        self.processed = self.nlp.pipe(self.data['Plot'])  # tokenize
-
-
-
+    def _process(self):
+        doc_gen = self.nlp.pipe(self.data['Plot'], n_process=2)  # tokenize
+        self.processed = [[w.lemma_ for w in doc if (not w.is_stop and not w.is_punct and not w.like_num)] for doc in doc_gen]
+        return self.processed
 
 if __name__=='__main__':
     d = Dataset.create('../data.nosync/test.csv')
-    d._preprocess()
-    print(STOP_WORDS)
+    d._process()
 
-    print(list(list(d.processed)[0]))
+    print(d.processed[0:2])

@@ -18,7 +18,4 @@ class Config:
 
 if __name__=='__main__':
     c = Config('config.json')
-    print(type(c.a))
-    print(type(c.b))
-    print(type(c.c))
     print(c)

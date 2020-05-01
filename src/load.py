@@ -13,7 +13,7 @@ class Dataset:
     def __init__(self, data, config):
         self.data = data
         self.nlp = spacy.load("en_core_web_sm")#, disable=['tagger', 'parser'])
-        # self.titles = dict(((t, i) for i, t in self.data[TODO]))
+        self.titles = dict(((t, i) for i, t in enumerate(self.data['Title'])))
         self.processed = None
         self.config = config
 

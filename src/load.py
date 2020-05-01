@@ -41,17 +41,21 @@ class Dataset:
             # o.append(''.join([e.label_, '_ENT']))
         return o
 
-    def _process(self):
+    def _preprocess(self):
         flatten = lambda l: [item for sublist in l for item in sublist]
         doc_gen = self.nlp.pipe(self.data['Plot'], n_process=2)  # tokenize
         self.processed = [flatten((self._extract(w) for w in doc if (not w.is_stop and not w.is_punct and not w.like_num))) for doc in doc_gen]
-        return self.processed
+
+    def process(self): 
+        self._preprocess()
+        # TODO should we always gensim Tag?
+        # TODO extract vocab, word count, etc
 
 
 
 if __name__=='__main__':
     c = Config('config.json')
     d = Dataset.create('../data.nosync/test.csv', c)
-    d._process()
+    d._preprocess()
 
     print(d.processed[0:2])

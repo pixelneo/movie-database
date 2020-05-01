@@ -6,52 +6,43 @@ import gensim
 import pandas as pd
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
+from smart_open import open
 
 from config import Config
 
 class Dataset:
-    def __init__(self, data, config):
-        self.data = data
-        self.nlp = spacy.load("en_core_web_sm")#, disable=['tagger', 'parser'])
-        self.titles = dict(((t, i) for i, t in enumerate(self.data['Title'])))
+    def __init__(self, path, config):
+        self.path = path
+        self.nlp = spacy.load("en_core_web_sm", disable=['tagger', 'parser', 'ner'])
+        self.titles = dict(((t, i) for i, t in enumerate(self._index_iterator(1))))
         self.processed = None
         self.config = config
 
-    @classmethod
-    def create(cls, path, config):
-        return cls(pd.read_csv(path, usecols=[0,1,7]), config)
-
-    @classmethod
-    def save(cls):
-        raise NotImplementedError()
-
-    @classmethod
-    def load(cls, config=None):
-        raise NotImplementedError()
+    def _index_iterator(self, index):
+        with open(self.path, encoding='UTF-8', buffering=1024) as f:
+            r = csv.reader(f)
+            next(r) # header
+            for row in r:
+                yield row[index]
 
     def _extract(self, w):
-        o = []
         if self.config.lemma:
-            o.append(w.lemma_)
+            return w.lemma_.lower()
         else:
-            o.append(w.text)
+            return w.text.lower()
 
-        if self.config.entity:
-            raise NotImplementedError()
-            # o.append(''.join([e.label_, '_ENT']))
-        return o
+    def _process(self):
+        for doc in self.nlp.pipe(self._index_iterator(7)):
+            yield [self._extract(w) for w in doc if (not w.is_stop and not w.is_punct and not w.like_num)]
 
-    def process(self):
-        flatten = lambda l: [item for sublist in l for item in sublist]
-        doc_gen = self.nlp.pipe(self.data['Plot'], n_process=2)  # tokenize
-        self.processed = [flatten((self._extract(w) for w in doc if (not w.is_stop and not w.is_punct and not w.like_num))) for doc in doc_gen]
-        return self.processed
+    def __iter__(self):
+        return self._process()
 
 
 
 if __name__=='__main__':
     c = Config('config.json')
-    d = Dataset.create('../data.nosync/wiki_movie_plots_deduped.csv', c)
-    d.process()
+    d = Dataset('../data.nosync/wiki_movie_plots_deduped.csv', c)
 
-    print(d.processed[0:2])
+    for i, d in enumerate(d):
+        print(d[0], end=' ')

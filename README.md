@@ -6,6 +6,7 @@ A project for course [Language Technologies in Practice](https://ufal.mff.cuni.c
 It contains about 4.5M movies and tv show episodes (each episode counted as an entry).
 For about 600k of them, there is a plot.
 - OR a Kaggle dataset [https://www.kaggle.com/jrobischon/wikipedia-movie-plots/data#wiki_movie_plots_deduped.csv](https://www.kaggle.com/jrobischon/wikipedia-movie-plots/data#wiki_movie_plots_deduped.csv) containing about 35k movie plots from wikipedia. They are much longer then those from IMDB.
+- OR this dataset [http://www.cs.cmu.edu/~ark/personas/](http://www.cs.cmu.edu/~ark/personas/) - 42k movie plot from wikipedia
 
 ## An (optimistic) plan
 - [ ] Do topic modelling on movie plots, using multiple methods

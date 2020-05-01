@@ -16,15 +16,15 @@ class TopicModelling:
 
     def lda(self):
         # preprocess
-        data = self._dataset.processed
-        bigram = Phrases(data, min_count=2, delimiter=b'*')
-        for i_d in range(len(data)):
-            for b in bigram[data[i_d]]:
-                if '*' in  b:
-                    data[i_d].append(b)
-        dictionary = Dictionary(data)
+        docs = self._dataset
+        # bigram = Phrases(docs, min_count=2, delimiter=b'*')
+        # for i_d, doc in enumerate(docs):
+            # for b in bigram[doc]:
+                # if '*' in  b:
+                    # docs[i_d].append(b)
+        dictionary = Dictionary(docs)
         dictionary.filter_extremes(no_below=2, no_above=0.3)
-        corpus = [dictionary.doc2bow(doc) for doc in data]
+        corpus = [dictionary.doc2bow(doc) for doc in docs]
         _ = dictionary[0]
 
         model = LdaModel(
@@ -41,7 +41,7 @@ class TopicModelling:
         )
         path = datapath('lda_model')
         model.save(path)
-        return model, corpus 
+        return model, corpus
 
 
     def _doc2vec(self, topics):
@@ -62,8 +62,7 @@ class TopicModelling:
 
 if __name__=='__main__':
     c = Config('config.json')
-    d = Dataset.create('../data.nosync/test2.csv', c)
-    d.process()
+    d = Dataset('../data.nosync/test2.csv', c)
     t = TopicModelling(d, c)
     m, data = t.lda()
     pprint(m.top_topics(data)[:5])

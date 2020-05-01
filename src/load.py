@@ -17,6 +17,7 @@ class Dataset:
         self.titles = dict(((t, i) for i, t in enumerate(self._index_iterator(1))))
         self.processed = None
         self.config = config
+        # self._process()
 
     def _index_iterator(self, index):
         with open(self.path, encoding='UTF-8', buffering=1024) as f:
@@ -31,12 +32,10 @@ class Dataset:
         else:
             return w.text.lower()
 
-    def _process(self):
-        for doc in self.nlp.pipe(self._index_iterator(7)):
-            yield [self._extract(w) for w in doc if (not w.is_stop and not w.is_punct and not w.like_num)]
-
     def __iter__(self):
-        return self._process()
+        docs = self.nlp.pipe(self._index_iterator(7))
+        return ([self._extract(w) for w in doc if (not w.is_stop and not w.is_punct and not w.like_num)] for doc in docs)
+
 
 
 

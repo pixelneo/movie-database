@@ -1,0 +1,11 @@
+{
+    "lemma": true,
+    "entity": false,
+    "topic_method": "lda",
+    "lda_passes": 30,
+    "lda_iter": 400,
+    "lda_topics": 200,
+    "cluster": "hiearch",
+    "__empty__value": "lda, doc2vec, lsa"
+}
+

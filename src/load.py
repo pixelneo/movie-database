@@ -20,7 +20,7 @@ class Dataset:
         # self._process()
 
     def _index_iterator(self, index):
-        with open(self.path, encoding='UTF-8', buffering=1024) as f:
+        with open(self.path, encoding='UTF-8', buffering=16000) as f:
             r = csv.reader(f)
             next(r) # header
             for row in r:
@@ -33,7 +33,7 @@ class Dataset:
             return w.text.lower()
 
     def __iter__(self):
-        docs = self.nlp.pipe(self._index_iterator(7))
+        docs = self.nlp.pipe(self._index_iterator(7), batch_size=256, n_process=4)
         return ([self._extract(w) for w in doc if (not w.is_stop and not w.is_punct and not w.like_num)] for doc in docs)
 
 

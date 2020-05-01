@@ -3,8 +3,8 @@
     "entity": false,
     "topic_method": "lda",
     "lda_passes": 10,
-    "lda_iter": 100,
-    "lda_topics": 200,
+    "lda_iter": 200,
+    "lda_topics": 100,
     "cluster": "hiearch",
     "__empty__value": "lda, doc2vec, lsa"
 }

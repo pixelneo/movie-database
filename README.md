@@ -17,3 +17,6 @@ For about 600k of them, there is a plot.
     * [ ] TF-IDF or something similar to find the plot of the movie, then use methods from topic modelling to find similar movies.
     * [ ] (maybe) use reviews to cluster the movies - similar movie might have similar reviews
 - [ ] TBD
+
+## TODOs
+- [ ] Remove proper names (eg. john, paul, george, ...)

@@ -24,7 +24,7 @@ class TopicModelling:
                 # if '*' in  b:
                     # docs[i_d].append(b)
         dictionary = Dictionary(docs)
-        dictionary.filter_extremes(no_below=2, no_above=0.3)
+        dictionary.filter_extremes(no_below=2, no_above=0.2)
         corpus = [dictionary.doc2bow(doc) for doc in docs]
         _ = dictionary[0]
 

@@ -10,7 +10,7 @@ For about 600k of them, there is a plot.
 
 ## An (optimistic) plan
 - [ ] Do topic modelling on movie plots, using multiple methods
-    * [ ] LDA
+    * [x] LDA
     * [ ] Doc2Vec + Clustering
     * [ ] LSA + Clustering
 - [ ] Make an search system: based on title, search for similar movies
@@ -19,4 +19,4 @@ For about 600k of them, there is a plot.
 - [ ] TBD
 
 ## TODOs
-- [ ] Remove proper names (eg. john, paul, george, ...)
+- [x] Remove proper names (eg. john, paul, george, ...)

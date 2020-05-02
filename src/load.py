@@ -25,7 +25,7 @@ class Dataset:
         c.path = path
         c.c = config
         c.nlp = spacy.load("en_core_web_sm", disable=['tagger', 'parser'])
-        c.titles = dict(((' '.join(t), i) for i, t in enumerate(c._index_iterator(c.c.title_col))))
+        c.titles = [' '.join([t, y]) for t, y in zip(c._index_iterator(c.c.title_col), c._index_iterator(c.c.year_col))]
         c.processed = False
         return c
 
@@ -37,6 +37,7 @@ class Dataset:
         with open(''.join([path, '.plots']), 'rb') as f:
             c.data = pickle.load(f)
         c.processed = True 
+        return c
 
     def save(self, path):
         with open(''.join([path, '.plots']), 'wb') as f:
@@ -85,7 +86,11 @@ class Dataset:
 
 if __name__=='__main__':
     c = Config('config.json')
-    d = Dataset.create('../data.nosync/test2.csv', c)
-    d.save('../models.nosync/data2')
+    d = Dataset.create('../data.nosync/test_wiki.csv', c)
+    d.save('../models.nosync/data_test')
+    d = Dataset.load('../models.nosync/data_test')
+    print(d.titles[:10])
+    # d = Dataset.create('../data.nosync/train_wiki.csv', c)
+    # d.save('../models.nosync/data_train')
     # d.load('../models.nosync/data2')
-    pprint(list(d)[19:20])
+    # pprint(list(d)[10:20])

@@ -17,15 +17,9 @@ class TopicModelling:
         self.c = config
 
     def train_lda(self):
-        # preprocess
         docs = self._dataset
-        # bigram = Phrases(docs, min_count=2, delimiter=b'_')
-        # for i_d, doc in enumerate(docs):
-            # for b in bigram[doc]:
-                # if '_' in  b:
-                    # docs[i_d].append(b)
         dictionary = Dictionary(docs)
-        # dictionary.filter_extremes(no_below=5, no_above=0.2)
+        dictionary.filter_extremes(no_below=3, no_above=0.5)
         corpus = [dictionary.doc2bow(doc) for doc in docs]
         _ = dictionary[0]
         dictionary.save('../models.nosync/lda/dict')
@@ -53,6 +47,7 @@ class TopicModelling:
     def eval_lda(self):
         path = '../models.nosync/lda/model'
         model = model.load(path)
+        # TODO smtng like loop over all docs in dataset and for each find similar docs and print their titles
 
 
 

@@ -2,7 +2,8 @@
     "method": "lda",
     "general": {
         "plot_col": 7,
-        "title_col": 1
+        "title_col": 1,
+        "year_col": 0
     },
     "methods": {
         "lda": {

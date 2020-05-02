@@ -1,0 +1,17 @@
+---
+method: lda
+general:
+  plot_col: 7
+  title_col: 1
+  year_col: 0
+methods:
+  lda:
+    lemma: true
+    entity: true
+    bigrams: true
+    lda_passes: 10
+    lda_iter: 200
+    lda_topics: 100
+  doc2vec: {}
+  else:
+    cluster: hiearch

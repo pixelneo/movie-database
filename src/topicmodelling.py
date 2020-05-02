@@ -25,7 +25,7 @@ class TopicModelling:
                 # if '_' in  b:
                     # docs[i_d].append(b)
         dictionary = Dictionary(docs)
-        dictionary.filter_extremes(no_below=5, no_above=0.2)
+        # dictionary.filter_extremes(no_below=5, no_above=0.2)
         corpus = [dictionary.doc2bow(doc) for doc in docs]
         _ = dictionary[0]
         dictionary.save('../models.nosync/lda/dict')
@@ -69,9 +69,9 @@ class TopicModelling:
 
 if __name__=='__main__':
     c = Config('config.json')
-    d = Dataset('../data.nosync/test.csv', c)
+    d = Dataset('../data.nosync/wiki_movie_plots_deduped.csv', c)
     t = TopicModelling(d, c)
     m, data = t.train_lda()
-    # pprint(m.top_topics(data))
-    pprint(m.get_topics().shape)
+    pprint(m.top_topics(data))
+    # pprint(m.get_topics().shape)
 

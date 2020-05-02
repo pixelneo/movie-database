@@ -5,7 +5,10 @@ class Config:
     def __init__(self, path):
         self._c = {}
         with open(path, 'r') as f: 
-            self._c.update(json.load(f))
+            obj = json.load(f)
+            self.method = obj['method']
+            self._c.update(obj['general'])
+            self._c.update(obj['methods'][self.method])
 
     def __getattr__(self, key):
         try:

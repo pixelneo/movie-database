@@ -1,11 +1,18 @@
-{
-    "lemma": true,
-    "entity": false,
-    "topic_method": "lda",
-    "lda_passes": 10,
-    "lda_iter": 200,
-    "lda_topics": 100,
-    "cluster": "hiearch",
-    "__empty__value": "lda, doc2vec, lsa"
+{   
+    "method": "lda",
+    "general": {},
+    "methods": {
+        "lda": {
+            "lemma": true,
+            "entity": false,
+            "bigrams": true,
+            "lda_passes": 10,
+            "lda_iter": 200,
+            "lda_topics": 100
+        },
+        "doc2vec": {},
+        "else": {
+            "cluster": "hiearch"
+        }
+    }
 }
-

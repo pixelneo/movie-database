@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import itertools
 
 import numpy as np
 import gensim
@@ -15,20 +16,21 @@ class TopicModelling:
         self._dataset = dataset
         self.c = config
 
-    def lda(self):
+    def train_lda(self):
         # preprocess
         docs = self._dataset
-        # bigram = Phrases(docs, min_count=2, delimiter=b'*')
+        # bigram = Phrases(docs, min_count=2, delimiter=b'_')
         # for i_d, doc in enumerate(docs):
             # for b in bigram[doc]:
-                # if '*' in  b:
+                # if '_' in  b:
                     # docs[i_d].append(b)
         dictionary = Dictionary(docs)
-        dictionary.filter_extremes(no_below=2, no_above=0.2)
+        dictionary.filter_extremes(no_below=5, no_above=0.2)
         corpus = [dictionary.doc2bow(doc) for doc in docs]
         _ = dictionary[0]
+        dictionary.save('../models.nosync/lda/dict')
 
-        alpha = np.arange(0.01, 0.1, (0.1-0.01)/self.c.lda_topics)
+        alpha = np.arange(0.005, 0.05, (0.05-0.005)/self.c.lda_topics)
 
         print('starting LDA')
         model = LdaMulticore(
@@ -37,13 +39,14 @@ class TopicModelling:
             id2word=dictionary.id2token,
             chunksize=8192,
             alpha=alpha,
-            eta=0.001,
+            eta='auto',
             iterations=self.c.lda_iter,
             num_topics=self.c.lda_topics,
             passes=self.c.lda_passes,
-            eval_every=None
+            eval_every=1000
         )
-        path = datapath('lda_model')
+        # path = datapath('lda_model')
+        path = '../models.nosync/lda/model'
         model.save(path)
         return model, corpus
 
@@ -66,8 +69,9 @@ class TopicModelling:
 
 if __name__=='__main__':
     c = Config('config.json')
-    d = Dataset('../data.nosync/wiki_movie_plots_deduped.csv', c)
+    d = Dataset('../data.nosync/test.csv', c)
     t = TopicModelling(d, c)
-    m, data = t.lda()
-    pprint(m.top_topics(data))
+    m, data = t.train_lda()
+    # pprint(m.top_topics(data))
+    pprint(m.get_topics().shape)
 

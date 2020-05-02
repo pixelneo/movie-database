@@ -13,7 +13,7 @@ from config import Config
 class Dataset:
     def __init__(self, path, config):
         self.path = path
-        self.nlp = spacy.load("en_core_web_sm", disable=['tagger', 'parser', 'ner'])
+        self.nlp = spacy.load("en_core_web_sm", disable=['tagger', 'parser'])
         self.titles = dict(((t, i) for i, t in enumerate(self._index_iterator(1))))
         self.processed = None
         self.config = config
@@ -32,9 +32,13 @@ class Dataset:
         else:
             return w.text.lower()
 
+    def _noproper(self, doc):
+        ents = [e.text for e in doc.ents if not e.label_ == 'PERSON']
+        return (t for t in doc if t.text not in ents)
+
     def __iter__(self):
         docs = self.nlp.pipe(self._index_iterator(7), batch_size=256, n_process=4)
-        return ([self._extract(w) for w in doc if (not w.is_stop and not w.is_punct and not w.like_num)] for doc in docs)
+        return ([self._extract(w) for w in self._noproper(doc) if (not w.is_stop and not w.is_punct and not w.like_num)] for doc in docs)
 
 
 

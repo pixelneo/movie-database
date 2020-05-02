@@ -20,3 +20,4 @@ For about 600k of them, there is a plot.
 
 ## TODOs
 - [x] Remove proper names (eg. john, paul, george, ...)
+- [ ] Make documentation on how to run it.

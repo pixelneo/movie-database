@@ -16,11 +16,28 @@ from config import Config
 import time
 
 class Dataset:
+    """
+    A class representing dataset.
+    It is iterable over procesesed documents
+    (processed might mean lemmatization, removal of some entities, etc.)
+
+    """
+
     def __init__(self):
         pass
 
     @classmethod
     def create(cls, path, config):
+        """ Creates new dataset from csv file.
+
+        Args:
+            path: (str) path to csv file
+            config: Instance of Config class
+
+        Returns:
+            New `Dataset` object
+
+        """
         c = cls()
         c.path = path
         c.c = config
@@ -31,15 +48,17 @@ class Dataset:
 
     @classmethod
     def load(cls, path):
+        """ Load preprocessed dataset form pickled file """
         c = cls()
         with open(''.join([path, '.titles']), 'rb') as f:
             c.titles = pickle.load(f)
         with open(''.join([path, '.plots']), 'rb') as f:
             c.data = pickle.load(f)
-        c.processed = True 
+        c.processed = True
         return c
 
     def save(self, path):
+        """ Save processed dataset to pickle """
         with open(''.join([path, '.plots']), 'wb') as f:
             pickle.dump(list(self), f)
         with open(''.join([path, '.titles']), 'wb') as f:
@@ -47,6 +66,7 @@ class Dataset:
 
 
     def _index_iterator(self, index):
+        """ Read `index`-the column from raw csv file """
         with open(self.path, encoding='UTF-8', buffering=31000) as f:
             r = csv.reader(f)
             next(r) # header
@@ -66,6 +86,7 @@ class Dataset:
             return doc
 
     def _process(self, index):
+        """ Perform text processing on `index`-th column of the csv file """
         docs = self.nlp.pipe(self._index_iterator(index), batch_size=512, n_process=4)
         docs_clean = [[self._extract(w) for w in self._process_doc(doc) if (not w.is_stop and not w.is_punct and not w.like_num)] for doc in docs]
         bigram = Phrases(docs_clean, min_count=1, delimiter=b'_')

@@ -12,6 +12,9 @@ from config import Config
 from load import Dataset
 
 class TopicModelling:
+    """
+    Class for processing data by selected method: LDA, Doc2Vec, ...
+    """
     def __init__(self, dataset, config):
         self._dataset = dataset
         self.c = config

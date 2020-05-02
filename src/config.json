@@ -1,10 +1,13 @@
 {   
     "method": "lda",
-    "general": {},
+    "general": {
+        "plot_col": 7,
+        "title_col": 1
+    },
     "methods": {
         "lda": {
             "lemma": true,
-            "entity": false,
+            "entity": true,
             "bigrams": true,
             "lda_passes": 10,
             "lda_iter": 200,

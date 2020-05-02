@@ -50,6 +50,11 @@ class TopicModelling:
         model.save(path)
         return model, corpus
 
+    def eval_lda(self):
+        path = '../models.nosync/lda/model'
+        model = model.load(path)
+
+
 
     def _doc2vec(self, topics):
         raise NotImplementedError()
@@ -69,7 +74,8 @@ class TopicModelling:
 
 if __name__=='__main__':
     c = Config('config.json')
-    d = Dataset('../data.nosync/wiki_movie_plots_deduped.csv', c)
+    d = Dataset.create('../data.nosync/test2.csv', c)
+    # d = Dataset.load('../models.nosync/data')
     t = TopicModelling(d, c)
     m, data = t.train_lda()
     pprint(m.top_topics(data))

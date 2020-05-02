@@ -10,6 +10,7 @@ import pandas as pd
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
 from smart_open import open
+from pprint import pprint
 
 from config import Config
 import time
@@ -24,7 +25,7 @@ class Dataset:
         c.path = path
         c.c = config
         c.nlp = spacy.load("en_core_web_sm", disable=['tagger', 'parser'])
-        c.titles = dict(((' '.join(t), i) for i, t in enumerate(c._index_iterator(1))))
+        c.titles = dict(((' '.join(t), i) for i, t in enumerate(c._index_iterator(c.c.title_col))))
         c.processed = False
         return c
 
@@ -59,8 +60,7 @@ class Dataset:
 
     def _process_doc(self, doc):
         if self.c.entity:
-            ents = [e.text for e in doc.ents if not e.label_ == 'PERSON']
-            return (t for t in doc if (t.text not in ents))
+            return (t for t in doc if (t.ent_type_ != 'PERSON'))
         else:
             return doc
 
@@ -78,15 +78,14 @@ class Dataset:
 
     def __iter__(self):
         if not self.processed:
-            return self._process(7)
+            return self._process(self.c.plot_col)
         else:
             return iter(self.data)
 
 
 if __name__=='__main__':
     c = Config('config.json')
-    d = Dataset.create('../data.nosync/test.csv', c)
-    d.load('data_processed')
-    print(d.titles)
-    print(list(d)[:10])
-    # d.save('data_processed')
+    d = Dataset.create('../data.nosync/test2.csv', c)
+    d.save('../models.nosync/data2')
+    # d.load('../models.nosync/data2')
+    pprint(list(d)[19:20])

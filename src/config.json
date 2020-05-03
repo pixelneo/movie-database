@@ -3,7 +3,8 @@
     "general": {
         "plot_col": 7,
         "title_col": 1,
-        "year_col": 0
+        "year_col": 0,
+        "top": 1000000
     },
     "methods": {
         "lda": {
@@ -12,7 +13,7 @@
             "bigrams": true,
             "lda_passes": 10,
             "lda_iter": 200,
-            "lda_topics": 100
+            "lda_topics": 200
         },
         "doc2vec": {},
         "else": {

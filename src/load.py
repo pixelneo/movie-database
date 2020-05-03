@@ -47,13 +47,14 @@ class Dataset:
         return c
 
     @classmethod
-    def load(cls, path):
+    def load(cls, path, config):
         """ Load preprocessed dataset form pickled file """
         c = cls()
+        c.c = config
         with open(''.join([path, '.titles']), 'rb') as f:
-            c.titles = pickle.load(f)
+            c.titles = pickle.load(f)#[:c.c.top]
         with open(''.join([path, '.plots']), 'rb') as f:
-            c.data = pickle.load(f)
+            c.data = pickle.load(f)[:c.c.top]
         c.processed = True
         return c
 
@@ -67,7 +68,7 @@ class Dataset:
 
     def _index_iterator(self, index):
         """ Read `index`-the column from raw csv file """
-        with open(self.path, encoding='UTF-8', buffering=31000) as f:
+        with open(self.path, encoding='UTF-8', buffering=64000) as f:
             r = csv.reader(f)
             next(r) # header
             for row in r:
@@ -107,10 +108,9 @@ class Dataset:
 
 if __name__=='__main__':
     c = Config('config.json')
-    d = Dataset.create('../data.nosync/test_wiki.csv', c)
-    d.save('../models.nosync/data_test')
-    d = Dataset.load('../models.nosync/data_test')
-    print(d.titles[:10])
+    # d = Dataset.create('../data.nosync/test_wiki.csv', c)
+    # d.save('../models.nosync/data_test')
+    d = Dataset.load('../models.nosync/data_train')
     # d = Dataset.create('../data.nosync/train_wiki.csv', c)
     # d.save('../models.nosync/data_train')
     # d.load('../models.nosync/data2')

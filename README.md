@@ -13,7 +13,7 @@ For about 600k of them, there is a plot.
     * [x] LDA
     * [ ] Doc2Vec + Clustering
     * [ ] LSA + Clustering
-- [ ] Make an search system: based on title, search for similar movies
+- [ ] Make a search system: based on title, search for similar movies
     * [ ] TF-IDF or something similar to find the plot of the movie, then use methods from topic modelling to find similar movies.
     * [ ] (maybe) use reviews to cluster the movies - similar movie might have similar reviews
 - [ ] TBD

@@ -37,20 +37,19 @@ class TopicModelling:
         alpha = np.arange(0.005, 0.05, (0.05-0.005)/self.c.lda_topics)
 
         print('starting LDA')
-        model = LdaModel(
+        model = LdaMulticore(
             corpus=corpus,
             # distributed=True,
-            # workers=1,
+            workers=3,
             id2word=dictionary.id2token,
             chunksize=4000,
-            alpha='auto', #alpha,
+            alpha=self.c.alpha, # optimized alpha
             eta='auto',
             iterations=self.c.lda_iter,
             num_topics=self.c.lda_topics,
             passes=self.c.lda_passes,
             eval_every=5000
         )
-        # path = datapath('lda_model')
         path = '../models.nosync/lda/model'
         model.save(path)
         return model, corpus
@@ -61,16 +60,11 @@ class TopicModelling:
         corpus, dictionary = self._prepare_lda(dataset)
         x = model.log_perplexity(corpus)
         print(x)
-        print(model.alpha)
-        print(model.eta)
-        exit()
-        # TODO smtng like loop over all docs in dataset and for each find similar docs and print their titles
-        # print(corpus)
-        # exit()
-        for i, d in enumerate(corpus):
+        for i, (d, t) in enumerate(zip(corpus, dataset.titles)):
+            print(t)
             for j, s in model.get_document_topics(d):
-                print(dictionary.id2token[j], s, end=' ')
-            print()
+                print(dictionary.id2token[j], end=' ')
+            print('\n')
 
 
 
@@ -98,9 +92,9 @@ if __name__=='__main__':
     # d2 = Dataset.create('../data.nosync/test_wiki.csv', c)
     # d2.save('../models.nosync/data_test')
     print('datasets done')
-    d = Dataset.load('../models.nosync/data_train', c)
-    # d2 = Dataset.load('../models.nosync/data_test', c)
+    # d = Dataset.load('../models.nosync/data_train', c)
+    d2 = Dataset.load('../models.nosync/data_test', c)
     t = TopicModelling(c)
-    m, data = t.train_lda(d)
-    # t.eval_lda(d2)
+    # m, data = t.train_lda(d)
+    t.eval_lda(d2)
 

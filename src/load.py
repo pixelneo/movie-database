@@ -2,6 +2,7 @@
 import csv
 import itertools
 import pickle
+import os
 
 from pprint import pprint
 import gensim
@@ -14,6 +15,26 @@ from pprint import pprint
 
 from config import Config
 import time
+
+def split(file_in, dir_out, train_size=34000):
+    with open(file) as f:
+        x = csv.reader(f)
+        with open(os.path.join(dir_out,'train_wiki.csv'), 'w') as f:
+            for z in range(34000):
+                r = next(x)
+                w = csv.writer(f)
+                w.writerow(r)
+
+        with open(os.path.join(dir_out,'test_wiki.csv'), 'w') as f:
+            for r in x:
+                w = csv.writer(f)
+                w.writerow(r)
+
+with open('wiki_movie_plots_deduped.csv') as f:
+    x = csv.reader(f)
+    for z in range(34000):
+        next(x)
+
 
 class Dataset:
     """

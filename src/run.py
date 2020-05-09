@@ -3,7 +3,7 @@ from topicmodelling import TopicModelling
 from load import *
 from config import Config
 
-c = Config('config.json')
+c = Config('config.yaml')
 
 def create():
     split('../data.nosync/wiki_movie_plots_deduped.csv', '../data.nosync', c.train_size)

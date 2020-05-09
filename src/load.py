@@ -17,7 +17,7 @@ from config import Config
 import time
 
 def split(file_in, dir_out, train_size=34000):
-    with open(file) as f:
+    with open(file_in) as f:
         x = csv.reader(f)
         with open(os.path.join(dir_out,'train_wiki.csv'), 'w') as f:
             for z in range(34000):
@@ -29,11 +29,6 @@ def split(file_in, dir_out, train_size=34000):
             for r in x:
                 w = csv.writer(f)
                 w.writerow(r)
-
-with open('wiki_movie_plots_deduped.csv') as f:
-    x = csv.reader(f)
-    for z in range(34000):
-        next(x)
 
 
 class Dataset:
@@ -128,7 +123,7 @@ class Dataset:
 
 
 if __name__=='__main__':
-    c = Config('config.json')
+    c = Config('config.yaml')
     # d = Dataset.create('../data.nosync/test_wiki.csv', c)
     # d.save('../models.nosync/data_test')
     d = Dataset.load('../models.nosync/data_train')

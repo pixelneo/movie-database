@@ -8,6 +8,7 @@ class Config:
             obj = yaml.safe_load(f)
             self.method = obj['method']
             self._c.update(obj['general'])
+            self._c.update(obj['cluster'])
             self._c.update(obj['methods'][self.method])
 
     def __getattr__(self, key):

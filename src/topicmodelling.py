@@ -8,6 +8,7 @@ from gensim.models import Phrases, LdaMulticore, LdaModel
 from gensim.corpora import Dictionary
 from gensim.test.utils import datapath
 from pprint import pprint
+from sklearn.cluster import AgglomerativeClustering
 
 from config import Config
 from load import Dataset
@@ -66,6 +67,12 @@ class TopicModelling:
                 print(dictionary.id2token[j], end=' ')
             print('\n')
 
+    def inf_lda(self, dataset):
+        path = '../models.nosync/lda/model'
+        model = LdaMulticore.load(path)
+        corpus, dictionary = self._prepare_lda(dataset)
+        tw, _ = model.inference(corpus)
+        return tw
 
 
 

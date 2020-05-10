@@ -8,7 +8,6 @@ from gensim.models import Phrases, LdaMulticore, LdaModel
 from gensim.corpora import Dictionary
 from gensim.test.utils import datapath
 from pprint import pprint
-from sklearn.cluster import AgglomerativeClustering
 
 from config import Config
 from load import Dataset

@@ -17,6 +17,14 @@ from config import Config
 import time
 
 def split(file_in, dir_out, train_size=34000):
+    """ Splits dataset to train and test portions
+
+    Args:
+        file_in: raw dataset file path
+        dir_out: path to dir for output
+        train_size: size of train portion+1
+
+    """
     with open(file_in) as f:
         x = csv.reader(f)
         with open(os.path.join(dir_out,'train_wiki.csv'), 'w') as f:

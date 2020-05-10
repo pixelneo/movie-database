@@ -21,3 +21,6 @@ For about 600k of them, there is a plot.
 ## TODOs
 - [x] Remove proper names (eg. john, paul, george, ...)
 - [ ] Make documentation on how to run it.
+
+## Results
+- LDA + Clustering does not work as expected. There is a big difference between sizes of clusters. And after 'human evaluation' the movies usually are not clustered as expected.

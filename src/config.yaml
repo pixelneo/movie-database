@@ -19,5 +19,5 @@ methods:
   doc2vec: {}
 cluster:
   clusters: 500 
-  cluster_type: hiearch
+  cluster_type: kmeans
   dist_tres: null #0.0002

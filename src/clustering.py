@@ -7,8 +7,8 @@ class Cluster:
     def __init__(self, config):
         self.c = config
         self.types = {
-            'hiearch': lambda x: AgglomerativeClustering(n_clusters=x, distance_threshold=self.c.dist_tres, affinity='cosine', linkage='average'),
-            'kmeans': lambda x: KMeans(n_clusters=x, n_jobs=2)
+            'hiearch': lambda x: AgglomerativeClustering(n_clusters=x, affinity='cosine', linkage='average'),
+            'kmeans': lambda x: KMeans(n_clusters=x, n_jobs=4)
         }
 
     def train_cluster(self, dataset, matrix):

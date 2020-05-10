@@ -1,3 +1,3 @@
 # Usage 
 
-`./run.py {create|train|eval}`
+`./run.py {create|train|eval|inf}`

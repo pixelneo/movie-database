@@ -24,7 +24,7 @@ def eval():
     t.eval_lda(d2)  #TODO fix
 
 def inf():
-    d2 = Dataset.load('../models.nosync/data_test', c)
+    d2 = Dataset.load('../models.nosync/data_train', c)
     t = TopicModelling(c)
     cl = Cluster(c)
     matrix = t.inf_lda(d2)  #TODO fix

@@ -21,6 +21,19 @@ For about 600k of them, there is a plot.
 ## TODOs
 - [x] Remove proper names (eg. john, paul, george, ...)
 - [ ] Make documentation on how to run it.
+- How to evaluate? 35k plots is not a lot and ~2k test set is very small.
 
 ## Results
 - LDA + Clustering does not work as expected. There is a big difference between sizes of clusters. And after 'human evaluation' the movies usually are not clustered as expected.
+- LDA + `similarities` module from gensim works better than clustering
+
+## Example outputs
+`q` is the query, `v` are 5 most similar movies
+### LDA
+~~~
+q: The Lord of the Rings: The Fellowship of the Ring 2001
+v: The Lord of the Rings 1978, The Lord of the Rings: The Return of the King 2003, The Return of the King 1980, The Lord of the Rings: The Two Towers 2002, 23 2016,
+
+q: Casino 1995
+v: To Live and Die in L.A. 1985, Goodfellas 1990, Midnight Run 1988, Black Heat 1976, Jackie Brown 1997
+~~~

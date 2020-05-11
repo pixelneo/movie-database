@@ -26,9 +26,16 @@ def eval():
 def inf():
     d2 = Dataset.load('../models.nosync/data_train', c)
     t = TopicModelling(c)
+    corpus, model = t.inf_lda(d2)  #TODO fix
     cl = Cluster(c)
-    matrix = t.inf_lda(d2)  #TODO fix
-    cl.train_cluster(d2, matrix)
+    cl.find_similar(d2, corpus, model)
+
+def test():
+    raise NotImplementedError()
+    d2 = Dataset.load('../models.nosync/data_test', c)
+    t = TopicModelling(c)
+    t.inf_lda(d2)
+
 
 
 runs = {
@@ -36,6 +43,7 @@ runs = {
     "train": train,
     "eval": eval,
     "inf": inf,
+    "test": test,
 }
 if __name__=='__main__':
     import sys

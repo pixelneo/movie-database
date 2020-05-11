@@ -2,6 +2,8 @@
 import pickle
 
 from sklearn.cluster import AgglomerativeClustering, KMeans
+from gensim import similarities
+import numpy as np
 
 class Cluster:
     def __init__(self, config):
@@ -11,7 +13,24 @@ class Cluster:
             'kmeans': lambda x: KMeans(n_clusters=x, n_jobs=4)
         }
 
+    def find_similar(self, dataset, corpus, model):
+        matrix = model[corpus]
+        index = similarities.MatrixSimilarity(matrix)
+        index.save('../models.nosync/index')
+        # index = similarities.MatrixSimilarity.load('../models.nosync/index')
+        sim = index[model[corpus]]
+        sim = np.array(sim)
+        for t, s in zip(dataset.titles, sim):
+            print(t)
+            ind = np.argsort(s)[::-1]
+            for it2 in ind[1:6]:
+                print(dataset.titles[it2], end=', ')
+            print('\n-----\n')
+
+
+
     def train_cluster(self, dataset, matrix):
+        """ Deprecated """
         model = self.types[self.c.cluster_type](self.c.clusters)
         # model = model.fit(matrix)
         # with open('../models.nosync/cluster', 'wb') as f:

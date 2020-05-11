@@ -70,8 +70,7 @@ class TopicModelling:
         path = '../models.nosync/lda/model'
         model = LdaMulticore.load(path)
         corpus, dictionary = self._prepare_lda(dataset)
-        tw, _ = model.inference(corpus)
-        return tw
+        return corpus, model
 
 
 

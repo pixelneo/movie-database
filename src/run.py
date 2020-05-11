@@ -36,7 +36,11 @@ def test():
     t = TopicModelling(c)
     t.inf_lda(d2)
 
-
+def reproduce(method):
+    # TODO handle method
+    create()
+    train()
+    inf()
 
 runs = {
     "create": create,
@@ -44,8 +48,12 @@ runs = {
     "eval": eval,
     "inf": inf,
     "test": test,
+    "reproduce": reproduce
 }
 if __name__=='__main__':
     import sys
-    runs[sys.argv[1]]()
+    if len(sys.argv) == 2:
+        runs[sys.argv[1]]()
+    elif len(sys.argv) == 3:
+        runs[sys.argv[1]](sys.argv[2])
 

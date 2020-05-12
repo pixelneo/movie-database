@@ -15,14 +15,40 @@ from load import Dataset
 logging.basicConfig(format='%(levelname)s : %(message)s', level=logging.INFO)
 logging.root.level = logging.INFO 
 
+
 class TopicModelling:
     """
-    Class for processing data by selected method: LDA, Doc2Vec, ...
+    Abstract class for processing data by selected method: LDA, Doc2Vec, ...
     """
     def __init__(self, config):
         self.c = config
 
-    def _prepare_lda(self, dataset):
+    @classmethod
+    def create(cls, config):
+        if config.method == 'lda':
+            return LdaModelling(config)
+        elif config.method == 'doc2vec':
+            raise NotImplementedError()
+        elif config.method == 'lsa':
+            raise NotImplementedError()
+        else:
+            raise AttributeError('Selected topic modelling method does not exist')
+
+    def train(self, dataset):
+        raise NotImplementedError()
+
+    def eval(self, dataset):
+        raise NotImplementedError()
+
+    def infer(self, dataset):
+        raise NotImplementedError()
+
+
+class LdaModelling(TopicModelling):
+    def __init__(self, config):
+        self.c = config
+
+    def _prepare(self, dataset):
         docs = dataset
         dictionary = Dictionary(docs)
         dictionary.filter_extremes(no_below=3, no_above=0.5)
@@ -30,11 +56,9 @@ class TopicModelling:
         _ = dictionary[0]
         return corpus, dictionary
 
-    def train_lda(self, dataset):
-        corpus, dictionary = self._prepare_lda(dataset)
+    def train(self, dataset):
+        corpus, dictionary = self._prepare(dataset)
         dictionary.save('../models.nosync/lda/dict')
-
-        alpha = np.arange(0.005, 0.05, (0.05-0.005)/self.c.lda_topics)
 
         print('starting LDA')
         model = LdaMulticore(
@@ -54,10 +78,10 @@ class TopicModelling:
         model.save(path)
         return model, corpus
 
-    def eval_lda(self, dataset):
+    def eval(self, dataset):
         path = '../models.nosync/lda/model'
         model = LdaMulticore.load(path)
-        corpus, dictionary = self._prepare_lda(dataset)
+        corpus, dictionary = self._prepare(dataset)
         x = model.log_perplexity(corpus)
         print(x)
         for i, (d, t) in enumerate(zip(corpus, dataset.titles)):
@@ -66,32 +90,16 @@ class TopicModelling:
                 print(dictionary.id2token[j], end=' ')
             print('\n')
 
-    def inf_lda(self, dataset):
+    def infer(self, dataset):
         path = '../models.nosync/lda/model'
         model = LdaMulticore.load(path)
-        corpus, dictionary = self._prepare_lda(dataset)
+        corpus, dictionary = self._prepare(dataset)
         return corpus, model
 
 
 
-    def _doc2vec(self, topics):
-        raise NotImplementedError()
-
-    def _lsa(self, topics):
-        raise NotImplementedError()
-
-    def model(self, topics=None):
-        if self.c.topic_method == 'lda':
-            pass
-        elif self.c.topic_method == 'doc2vec':
-            raise NotImplementedError()
-        elif self.c.topic_method == 'lsa':
-            raise NotImplementedError()
-        else:
-            raise AttributeError('Selected topic modelling method does not exist')
-
 if __name__=='__main__':
-    c = Config('config.json')
+    c = Config('config.yaml')
     # d = Dataset.create('../data.nosync/train_wiki.csv', c)
     # d.save('../models.nosync/data_train')
     # d2 = Dataset.create('../data.nosync/test_wiki.csv', c)
@@ -99,7 +107,7 @@ if __name__=='__main__':
     print('datasets done')
     # d = Dataset.load('../models.nosync/data_train', c)
     d2 = Dataset.load('../models.nosync/data_test', c)
-    t = TopicModelling(c)
+    t = TopicModelling.create(c)
+    t.infer(d2)
     # m, data = t.train_lda(d)
-    t.eval_lda(d2)
 

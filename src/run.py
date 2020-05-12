@@ -15,26 +15,26 @@ def create():
 
 def train():
     d = Dataset.load('../models.nosync/data_train', c)
-    t = TopicModelling(c)
-    m, data = t.train_lda(d)  #TODO fix
+    t = TopicModelling.create(c)
+    m, data = t.train(d)  #TODO fix
 
 def eval():
     d2 = Dataset.load('../models.nosync/data_test', c)
-    t = TopicModelling(c)
-    t.eval_lda(d2)  #TODO fix
+    t = TopicModelling.create(c)
+    t.eval(d2)  #TODO fix
 
 def inf():
     d2 = Dataset.load('../models.nosync/data_train', c)
-    t = TopicModelling(c)
-    corpus, model = t.inf_lda(d2)  #TODO fix
+    t = TopicModelling.create(c)
+    corpus, model = t.infer(d2)  #TODO fix
     cl = Cluster(c)
     cl.find_similar(d2, corpus, model)
 
 def test():
     raise NotImplementedError()
     d2 = Dataset.load('../models.nosync/data_test', c)
-    t = TopicModelling(c)
-    t.inf_lda(d2)
+    t = TopicModelling.create(c)
+    t.infer(d2)
 
 def reproduce(method):
     # TODO handle method

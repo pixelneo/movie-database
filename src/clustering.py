@@ -18,7 +18,7 @@ class Cluster:
         index = similarities.MatrixSimilarity(matrix)
         index.save('../models.nosync/index')
         # index = similarities.MatrixSimilarity.load('../models.nosync/index')
-        sim = index[model[corpus]]
+        sim = index[matrix]
         sim = np.array(sim)
         for t, s in zip(dataset.titles, sim):
             print(t)

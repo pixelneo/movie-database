@@ -4,7 +4,8 @@ import logging
 
 import numpy as np
 import gensim
-from gensim.models import Phrases, LdaMulticore, LdaModel, Doc2Vec
+from gensim.models import Phrases, LdaMulticore, LdaModel
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from gensim.corpora import Dictionary
 from gensim.test.utils import datapath
 from pprint import pprint
@@ -28,7 +29,7 @@ class TopicModelling:
         if config.method == 'lda':
             return LdaModelling(config)
         elif config.method == 'doc2vec':
-            raise NotImplementedError()
+            return Doc2VecModelling(config)
         elif config.method == 'lsa':
             raise NotImplementedError()
         else:
@@ -102,11 +103,21 @@ class Doc2VecModelling(TopicModelling):
 
     def train(self, dataset):
         # corpus, dictionary = self._prepare(dataset)
+        data = [TaggedDocument(doc, [i]) for i, doc in enumerate(dataset)]
         print('starting Doc2Vec')
-        model = Doc2Vec(dataset)
+        model = Doc2Vec(data, workers=4)
         path = '../models.nosync/doc2vec/model'
         model.save(path)
-        return model, corpus
+        return data, model
+
+    def infer(self, dataset):
+        data = [TaggedDocument(doc, [i]) for i, doc in enumerate(dataset)]
+        path = '../models.nosync/doc2vec/model'
+        model = Doc2Vec.load(path)
+        # model.delete_temporary_training_data(keep_doctags_vectors=True, keep_inference=True)
+        return data, model
+
+
 
 
 

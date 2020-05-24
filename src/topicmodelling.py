@@ -4,7 +4,7 @@ import logging
 
 import numpy as np
 import gensim
-from gensim.models import Phrases, LdaMulticore, LdaModel
+from gensim.models import Phrases, LdaMulticore, LdaModel, Doc2Vec
 from gensim.corpora import Dictionary
 from gensim.test.utils import datapath
 from pprint import pprint
@@ -34,6 +34,14 @@ class TopicModelling:
         else:
             raise AttributeError('Selected topic modelling method does not exist')
 
+    def _prepare(self, dataset):
+        docs = dataset
+        dictionary = Dictionary(docs)
+        dictionary.filter_extremes(no_below=2, no_above=0.5)
+        corpus = [dictionary.doc2bow(doc) for doc in docs]
+        _ = dictionary[0]
+        return corpus, dictionary
+
     def train(self, dataset):
         raise NotImplementedError()
 
@@ -46,15 +54,7 @@ class TopicModelling:
 
 class LdaModelling(TopicModelling):
     def __init__(self, config):
-        self.c = config
-
-    def _prepare(self, dataset):
-        docs = dataset
-        dictionary = Dictionary(docs)
-        dictionary.filter_extremes(no_below=3, no_above=0.5)
-        corpus = [dictionary.doc2bow(doc) for doc in docs]
-        _ = dictionary[0]
-        return corpus, dictionary
+        super().__init__(config)
 
     def train(self, dataset):
         corpus, dictionary = self._prepare(dataset)
@@ -95,6 +95,18 @@ class LdaModelling(TopicModelling):
         model = LdaMulticore.load(path)
         corpus, dictionary = self._prepare(dataset)
         return corpus, model
+
+class Doc2VecModelling(TopicModelling):
+    def __init__(self, config):
+        super().__init__(config)
+
+    def train(self, dataset):
+        # corpus, dictionary = self._prepare(dataset)
+        print('starting Doc2Vec')
+        model = Doc2Vec(dataset)
+        path = '../models.nosync/doc2vec/model'
+        model.save(path)
+        return model, corpus
 
 
 

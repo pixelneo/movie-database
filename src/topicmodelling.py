@@ -8,6 +8,7 @@ from gensim.models import Phrases, LdaMulticore, LdaModel
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from gensim.corpora import Dictionary
 from gensim.test.utils import datapath
+import gensim.downloader as api
 from pprint import pprint
 
 from config import Config
@@ -105,7 +106,7 @@ class Doc2VecModelling(TopicModelling):
         # corpus, dictionary = self._prepare(dataset)
         data = [TaggedDocument(doc, [i]) for i, doc in enumerate(dataset)]
         print('starting Doc2Vec')
-        model = Doc2Vec(data, epochs=15, window=15, vector_size=50, workers=4)
+        model = Doc2Vec(data, epochs=20, window=10, vector_size=50, workers=4)
         path = '../models.nosync/doc2vec/model'
         model.save(path)
         return data, model

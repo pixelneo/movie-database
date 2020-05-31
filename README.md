@@ -30,10 +30,20 @@ For about 600k of them, there is a plot.
 ## Example outputs
 `q` is the query, `v` are 5 most similar movies
 ### LDA
+*(These are with ommited query from the search results)*
 ~~~
 q: The Lord of the Rings: The Fellowship of the Ring 2001
 v: The Lord of the Rings 1978, The Lord of the Rings: The Return of the King 2003, The Return of the King 1980, The Lord of the Rings: The Two Towers 2002, 23 2016,
 
 q: Casino 1995
 v: To Live and Die in L.A. 1985, Goodfellas 1990, Midnight Run 1988, Black Heat 1976, Jackie Brown 1997
+~~~
+
+### Doc2Vec
+~~~
+q: Goodfellas 1990
+v: Goodfellas 1990, Street Bandits 1951, Public Enemies 1996, Legend 2015, Fog Over Frisco 1934, Casino 1995
+
+q: Goldfinger 1964
+v: Goldfinger 1964, The World Is Not Enough 1999, Casino Royale 2006, Dr. No 1962, A View to a Kill 1985, Skyfall 2012,
 ~~~

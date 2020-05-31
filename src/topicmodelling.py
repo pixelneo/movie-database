@@ -105,7 +105,7 @@ class Doc2VecModelling(TopicModelling):
         # corpus, dictionary = self._prepare(dataset)
         data = [TaggedDocument(doc, [i]) for i, doc in enumerate(dataset)]
         print('starting Doc2Vec')
-        model = Doc2Vec(data, workers=4)
+        model = Doc2Vec(data, epochs=15, window=15, vector_size=50, workers=4)
         path = '../models.nosync/doc2vec/model'
         model.save(path)
         return data, model

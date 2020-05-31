@@ -42,13 +42,17 @@ def reproduce(method):
     train()
     inf()
 
+def help():
+    print(runs.keys())
+
 runs = {
     "create": create,
     "train": train,
     "eval": eval,
     "inf": inf,
     "test": test,
-    "reproduce": reproduce
+    "reproduce": reproduce,
+    "help": help,
 }
 if __name__=='__main__':
     import sys

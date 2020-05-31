@@ -14,18 +14,28 @@ class Cluster:
         }
 
     def find_similar(self, dataset, corpus, model):
-        matrix = model[corpus]
-        index = similarities.MatrixSimilarity(matrix)
-        index.save('../models.nosync/index')
-        # index = similarities.MatrixSimilarity.load('../models.nosync/index')
-        sim = index[matrix]
-        sim = np.array(sim)
-        for t, s in zip(dataset.titles, sim):
-            print(t)
-            ind = np.argsort(s)[::-1]
-            for it2 in ind[1:6]:
-                print(dataset.titles[it2], end=', ')
-            print('\n-----\n')
+        if self.c.method == 'lda':
+            matrix = model[corpus]
+            index = similarities.MatrixSimilarity(matrix)
+            index.save('../models.nosync/index')
+            # index = similarities.MatrixSimilarity.load('../models.nosync/index')
+            sim = index[matrix]
+            sim = np.array(sim)
+            for t, s in zip(dataset.titles, sim):
+                print(t)
+                ind = np.argsort(s)[::-1]
+                for it2 in ind[1:6]:
+                    print(dataset.titles[it2], end=', ')
+                print('\n-----\n')
+        elif self.c.method == 'doc2vec':
+            for doc, title in zip(dataset, dataset.titles):
+                vec = model.infer_vector(doc)
+                sim = model.docvecs.most_similar([vec], topn=6)
+                print(title)
+                for t,s in sim:
+                    print(dataset.titles[t], end=', ')
+                print('\n-----\n')
+
 
 
 

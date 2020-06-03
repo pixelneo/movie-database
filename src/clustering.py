@@ -14,7 +14,7 @@ class Cluster:
         }
 
     def find_similar(self, dataset, corpus, model):
-        if self.c.method == 'lda':
+        if self.c.method == 'lda' or self.c.method == 'lsa':
             matrix = model[corpus]
             index = similarities.MatrixSimilarity(matrix)
             index.save('../models.nosync/index')

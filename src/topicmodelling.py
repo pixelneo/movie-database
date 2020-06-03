@@ -4,7 +4,7 @@ import logging
 
 import numpy as np
 import gensim
-from gensim.models import Phrases, LdaMulticore, LdaModel
+from gensim.models import Phrases, LdaMulticore, LdaModel, LsiModel
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from gensim.corpora import Dictionary
 from gensim.test.utils import datapath
@@ -32,7 +32,7 @@ class TopicModelling:
         elif config.method == 'doc2vec':
             return Doc2VecModelling(config)
         elif config.method == 'lsa':
-            raise NotImplementedError()
+            return LsiModelling(config)
         else:
             raise AttributeError('Selected topic modelling method does not exist')
 
@@ -117,6 +117,31 @@ class Doc2VecModelling(TopicModelling):
         model = Doc2Vec.load(path)
         # model.delete_temporary_training_data(keep_doctags_vectors=True, keep_inference=True)
         return data, model
+
+class LsiModelling(TopicModelling):
+    def __init__(self, config):
+        super().__init__(config)
+
+    def train(self, dataset):
+        corpus, dictionary = self._prepare(dataset)
+        dictionary.save('../models.nosync/lsa/dict')
+
+        print('starting LSA')
+        model = LsiModel(
+            corpus=corpus,
+            id2word=dictionary.id2token,
+            num_topics=self.c.lsa_topics
+        )
+        path = '../models.nosync/lsa/model'
+        model.save(path)
+        return model, corpus
+
+    def infer(self, dataset):
+        path = '../models.nosync/lsa/model'
+        model = LsiModel.load(path)
+        corpus, dictionary = self._prepare(dataset)
+        return corpus, model
+
 
 
 

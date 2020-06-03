@@ -1,5 +1,5 @@
 ---
-method: doc2vec 
+method: lsa 
 general:
   plot_col: 7
   title_col: 1
@@ -20,6 +20,11 @@ methods:
     lemma: true 
     entity: false 
     bigrams: false
+  lsa:
+    lemma: true
+    entity: true
+    bigrams: true
+    lsa_topics: 100
 cluster:
   clusters: 500 
   cluster_type: kmeans

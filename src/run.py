@@ -32,6 +32,7 @@ def test():
     t.infer(d2)
 
 def reproduce(method):
+    c._c['method'] = method.strip()
     create()
     train()
     inf()

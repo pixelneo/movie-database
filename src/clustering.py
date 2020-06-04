@@ -9,8 +9,6 @@ class Cluster:
     def __init__(self, config):
         self.c = config
         self.types = {
-            'hiearch': lambda x: AgglomerativeClustering(n_clusters=x, affinity='cosine', linkage='average'),
-            'kmeans': lambda x: KMeans(n_clusters=x, n_jobs=4)
         }
 
     def find_similar(self, dataset, corpus, model):
@@ -18,7 +16,6 @@ class Cluster:
             matrix = model[corpus]
             index = similarities.MatrixSimilarity(matrix)
             index.save('../models.nosync/index')
-            # index = similarities.MatrixSimilarity.load('../models.nosync/index')
             sim = index[matrix]
             sim = np.array(sim)
             for t, s in zip(dataset.titles, sim):
@@ -37,14 +34,9 @@ class Cluster:
                 print('\n-----\n')
 
 
-
-
     def train_cluster(self, dataset, matrix):
         """ Deprecated """
         model = self.types[self.c.cluster_type](self.c.clusters)
-        # model = model.fit(matrix)
-        # with open('../models.nosync/cluster', 'wb') as f:
-            # pickle.dump(model.get_params(), f)
         mapping = model.fit_predict(matrix)
         clusters = [None]*self.c.clusters
         for i, m in enumerate(mapping):
@@ -62,6 +54,7 @@ class Cluster:
 
 
     def inf_cluster(self, dataset, matrix):
+        """ Deprecated """
         with open('../models.nosync/cluster', 'rb') as f:
             model = pickle.load(f)
         model.predict(matrix)

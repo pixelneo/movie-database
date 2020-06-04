@@ -16,12 +16,7 @@ def create():
 def train():
     d = Dataset.load('../models.nosync/data_train', c)
     t = TopicModelling.create(c)
-    m, data = t.train(d)  #TODO fix
-
-def eval():
-    d2 = Dataset.load('../models.nosync/data_test', c)
-    t = TopicModelling.create(c)
-    t.eval(d2)  #TODO fix
+    m, data = t.train(d)
 
 def inf():
     d2 = Dataset.load('../models.nosync/data_train', c)
@@ -37,7 +32,6 @@ def test():
     t.infer(d2)
 
 def reproduce(method):
-    # TODO handle method
     create()
     train()
     inf()

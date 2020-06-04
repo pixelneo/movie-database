@@ -1,6 +1,8 @@
 # movie-database
 A project for course [Language Technologies in Practice](https://ufal.mff.cuni.cz/courses/npfl128).
 
+## Usage
+See README.md in `src/` dir.
 ## Data sources
 - Kaggle dataset [https://www.kaggle.com/jrobischon/wikipedia-movie-plots/data#wiki_movie_plots_deduped.csv](https://www.kaggle.com/jrobischon/wikipedia-movie-plots/data#wiki_movie_plots_deduped.csv) containing about 35k movie plots from wikipedia. They are much longer then those from IMDB.
 

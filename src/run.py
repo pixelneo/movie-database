@@ -32,7 +32,9 @@ def test():
     t.infer(d2)
 
 def reproduce(method):
-    c._c['method'] = method.strip()
+    c.reload(method)
+    print(c)
+    exit()
     create()
     train()
     inf()

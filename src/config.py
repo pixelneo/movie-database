@@ -4,9 +4,13 @@ import yaml
 class Config:
     def __init__(self, path):
         self._c = {}
-        with open(path, 'r') as f:
+        self.path = path
+        self.reload()
+
+    def reload(self, method=None):
+        with open(self.path, 'r') as f:
             obj = yaml.safe_load(f)
-            self.method = obj['method']
+            self.method = method if method else obj['method']
             self._c.update(obj['general'])
             self._c.update(obj['cluster'])
             self._c.update(obj['methods'][self.method])

@@ -33,8 +33,6 @@ def test():
 
 def reproduce(method):
     c.reload(method)
-    print(c)
-    exit()
     create()
     train()
     inf()

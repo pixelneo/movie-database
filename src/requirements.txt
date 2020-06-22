@@ -1,6 +1,0 @@
-smart_open==2.0.0
-numpy==1.18.3
-spacy==2.2.4
-gensim==3.8.2
-PyYAML==5.3.1
-scikit_learn==0.23.1

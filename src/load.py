@@ -7,7 +7,6 @@ import os
 from pprint import pprint
 import gensim
 from gensim.models import Phrases
-import pandas as pd
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
 from smart_open import open

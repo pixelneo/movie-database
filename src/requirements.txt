@@ -1,5 +1,4 @@
 smart_open==2.0.0
-pandas==1.0.3
 numpy==1.18.3
 spacy==2.2.4
 gensim==3.8.2

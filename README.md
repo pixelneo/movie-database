@@ -25,7 +25,7 @@ See README.md in `src/` dir.
 - On the other hand, I did not achieve what I expected, that is to find "similar" not "related" movies. I suspect better results might be obtained if the modelling is done on subtitles.
 
 ## Example outputs
-`q` is the query, `v` are 5 most similar movies
+`q` is the query, `v` are 5 most similar movies.
 ### LDA
 *(These are with ommited query from the search results)*
 ~~~

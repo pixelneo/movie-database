@@ -22,7 +22,7 @@ class Cluster:
                 ind = np.argsort(s)[::-1]
                 titles = []
                 for it2 in ind[1:6]:
-                    titles.append(dataset.titles[it2], end=', ')
+                    titles.append(dataset.titles[it2])
                 yield (t, titles)
 
         elif self.config.method == 'doc2vec':
@@ -31,7 +31,7 @@ class Cluster:
                 sim = model.docvecs.most_similar([vec], topn=6)
                 titles = []
                 for t,s in sim:
-                    titles.append(dataset.titles[t], end=', ')
+                    titles.append(dataset.titles[t])
                 yield (t, titles)
 
 

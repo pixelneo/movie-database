@@ -23,7 +23,9 @@ def inf():
     t = TopicModelling.create(c)
     corpus, model = t.infer(d2)  #TODO fix
     cl = Cluster(c)
-    cl.find_similar(d2, corpus, model)
+    for t, titles in cl.find_similar(d2, corpus, model):
+        print('{}: {}'.format(t, ', '.join(titles)))
+        print('---\n')
 
 def test():
     raise NotImplementedError()

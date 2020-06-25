@@ -8,9 +8,9 @@ class Config:
         self.reload()
 
     def reload(self, method=None):
-        with open(self.path, 'r') as f:
+        with open(self.path, 'r', encoding='utf-8') as f:
             obj = yaml.safe_load(f)
-            self.method = method if method else obj['method']
+            self.method = method or obj['method']
             self._c.update(obj['general'])
             self._c.update(obj['cluster'])
             self._c.update(obj['methods'][self.method])

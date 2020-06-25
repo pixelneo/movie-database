@@ -7,38 +7,39 @@ import numpy as np
 
 class Cluster:
     def __init__(self, config):
-        self.c = config
+        self.config = config
         self.types = {
         }
 
     def find_similar(self, dataset, corpus, model):
-        if self.c.method == 'lda' or self.c.method == 'lsa':
+        if self.config.method == 'lda' or self.config.method == 'lsa':
             matrix = model[corpus]
             index = similarities.MatrixSimilarity(matrix)
             index.save('../models.nosync/index')
             sim = index[matrix]
             sim = np.array(sim)
             for t, s in zip(dataset.titles, sim):
-                print(t)
                 ind = np.argsort(s)[::-1]
+                titles = []
                 for it2 in ind[1:6]:
-                    print(dataset.titles[it2], end=', ')
-                print('\n-----\n')
-        elif self.c.method == 'doc2vec':
+                    titles.append(dataset.titles[it2], end=', ')
+                yield (t, titles)
+
+        elif self.config.method == 'doc2vec':
             for doc, title in zip(dataset, dataset.titles):
                 vec = model.infer_vector(doc)
                 sim = model.docvecs.most_similar([vec], topn=6)
-                print(title)
+                titles = []
                 for t,s in sim:
-                    print(dataset.titles[t], end=', ')
-                print('\n-----\n')
+                    titles.append(dataset.titles[t], end=', ')
+                yield (t, titles)
 
 
     def train_cluster(self, dataset, matrix):
         """ Deprecated """
-        model = self.types[self.c.cluster_type](self.c.clusters)
+        model = self.types[self.config.cluster_type](self.config.clusters)
         mapping = model.fit_predict(matrix)
-        clusters = [None]*self.c.clusters
+        clusters = [None]*self.config.clusters
         for i, m in enumerate(mapping):
             if not clusters[m]:
                 clusters[m] = list()
